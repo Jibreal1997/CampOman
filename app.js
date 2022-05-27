@@ -1,3 +1,4 @@
+// Libraries
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
@@ -11,11 +12,11 @@ const Review = require('./models/review');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+// Router files
 const campgrounds = require('./routes/campgrounds');
 const reviews = require('./routes/reviews');
 
-
-
+// Connecting to MongoDb
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -29,11 +30,12 @@ db.once("open", () => {
     console.log("Database connected");
 });
 
+// Express intial settings
 const app = express();
-
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
@@ -51,15 +53,16 @@ const sessionConfig = {
     }
 }
 
+// Setting up sessions and flash
 app.use(session(sessionConfig));
 app.use(flash());
-
 app.use((req,res,next)=>{
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
+// Setting up routes
 app.use('/campgrounds', campgrounds);
 app.use('/campgrounds/:id/reviews', reviews);
 
@@ -73,12 +76,14 @@ app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
 
+// Custom error handler
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
     if (!err.message) err.message = 'Oh No, Something Went Wrong!'
     res.status(statusCode).render('error', { err })
 })
 
+// Starting server
 app.listen(3000, () => {
     console.log('Serving on port 3000')
 })
