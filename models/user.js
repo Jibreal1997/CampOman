@@ -11,6 +11,6 @@ const UserSchema = new Schema({
 });
 
 // Will add username, password and salt field to the schema
-userSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User',UserSchema);
