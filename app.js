@@ -75,6 +75,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // Flash messages, have access to these in every single view
 app.use((req,res,next)=>{
+    console.log(req.session)
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
