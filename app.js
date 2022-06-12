@@ -1,8 +1,9 @@
 if(process.env.NODE_ENV !== "production"){
     require('dotenv').config();
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
 }
 
-console.log(process.env.SECRET);
+console.log(process.env.CLOUDINARY_CLOUD_NAME, process.env.CLOUDINARY_KEY, process.env.CLOUDINARY_SECRET)
 
 // Libraries
 const express = require('express');
